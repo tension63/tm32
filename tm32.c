@@ -16,7 +16,7 @@
     1.1.1		7/2/2004			Fixed failed to open Com10, Com11.. etc bug
 	1.1.2		7/4/2005			Fixed missing 38400 baudrate
 	1.1.3		26-MAY-2005			Added color support
-	1.1.4		14/01/2010          For OMNIBOARD file upload
+	1.2.0		08/03/2012			Added time stamping
 
 */
 #include <windows.h>
@@ -24,6 +24,10 @@
 #include <conio.h>
 #include "rs232.h"
 #include "console.h"
+#include <sys/timeb.h>
+#include <time.h>
+
+
 
 /* Windows Key code */
 #define F1   0x3b00
@@ -49,12 +53,13 @@
 FILE *Stream;				/* File Stream */
 char MonitorMode=0;			/* start-up at Mon=zero */
 char SaveYes=0;				/* A flag set for entering screen capturing mode */
-char FileName[300];		/* screen capture to this 'filename' */
+char FileName[300];			/* screen capture to this 'filename' */
 int	 Port, BaudRate;		/* Port = 1,2...8  BaudRate = 2400,4800...57600 */
 int  Xcount=0;
+char flg_timestamp = 0;		/* time stamping flag */
 
 /* Version number */
-char* Version = "1.1.4";
+char* Version = "1.2.0";
 
 /* fwd reference */
 void show_setting(void);
@@ -216,7 +221,7 @@ char	txt[100], *p;
 
 		case	F1    :  
 			    MonitorMode = MonitorMode++;
-			    if (MonitorMode==3) MonitorMode=0;
+			    if (MonitorMode==4) MonitorMode=0;
 				show_setting();			    
 			    break;
 
@@ -261,13 +266,12 @@ char	txt[100], *p;
 					xcnt = 0;			// column counter
 					while ( (re=fgetc( Stream )) != EOF)
 					{
-						Sleep(2);
+						Sleep(5);
 						rs_putc((char)(re & 0xff));
 					
 						ch = rs_getch();	// get char from COM port
 						if (ch> 0) 
 						{
-
 							if (ch==LF)	// LF ?
 							{ 
 								xcnt = 0; con_print_CR();
@@ -282,13 +286,9 @@ char	txt[100], *p;
 								{ 
 									xcnt = 0; con_print_CR(); 
 								}
-								
 								if (ch==TAB) putch(' ');	// replace all TAB with ' '
-								    else putch(ch);
-								
+								else putch(ch);
 							}
-
-
 						}
 						if (kbhit()) { if (getch()==ESC) break; }		// user abort
 					}
@@ -380,6 +380,8 @@ void main(int argc,char *argv[])
 int ch, re; 
 unsigned int n;
 char ok =0, temp[100];
+struct _timeb timebuffer;
+
 
      switch(argc)
      {
@@ -477,6 +479,16 @@ char ok =0, temp[100];
 		
 		if (MonitorMode)       /* monitor mode 1 or 2 is ON */
 	    {
+			if (flg_timestamp)
+			{
+				  _ftime( &timebuffer );
+				  sprintf(  temp, "%u.%03u", timebuffer.time ,timebuffer.millitm);
+				  con_setcolor_red();
+				  for (n=0; n < strlen(temp); n++) display_ch( temp[n]);
+				  con_setcolor_normal();
+				  flg_timestamp = 0;
+			}
+
 			if (ch >= 0x20  && ch < 0x7F)	// displayable characters
 			{
 				display_ch((char)ch);
@@ -490,6 +502,10 @@ char ok =0, temp[100];
 				if (ch==CR && MonitorMode==2)		// in MON=2, CR will scroll the page
 				{ 
 					display_ch(LF); 
+				}
+				if (ch==CR && MonitorMode==3)		// in MON=3, CR will scroll the page, and display TimeStamp on next char
+				{ 
+					display_ch(LF); flg_timestamp = 1;
 				}
 			}
 	    }
