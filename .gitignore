@@ -3,3 +3,6 @@
 *.pch
 *.idb
 *.plg
+*.ncb
+*.opt
+
