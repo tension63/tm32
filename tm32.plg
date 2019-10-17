@@ -6,28 +6,24 @@
 --------------------Configuration: tm32 - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\HTTAN~1\AppData\Local\Temp\RSPB2C0.tmp" with contents
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP14.tmp" with contents
 [
 /nologo /ML /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"Release/tm32.pch" /YX /Fo"Release/" /Fd"Release/" /FD /c 
-"Z:\Projects\Git\tm32\console.c"
-"Z:\Projects\Git\tm32\rs232.c"
-"Z:\Projects\Git\tm32\tm32.c"
+"C:\Projects\SW\tm32\Work\tm32.c"
 ]
-Creating command line "cl.exe @C:\Users\HTTAN~1\AppData\Local\Temp\RSPB2C0.tmp" 
-Creating temporary file "C:\Users\HTTAN~1\AppData\Local\Temp\RSPB2C1.tmp" with contents
+Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP14.tmp" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP15.tmp" with contents
 [
 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /incremental:no /pdb:"Release/tm32.pdb" /machine:I386 /out:"Release/tm32.exe" 
 .\Release\console.obj
 .\Release\rs232.obj
 .\Release\tm32.obj
 ]
-Creating command line "link.exe @C:\Users\HTTAN~1\AppData\Local\Temp\RSPB2C1.tmp"
+Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP15.tmp"
 <h3>Output Window</h3>
 Compiling...
-console.c
-rs232.c
 tm32.c
-Z:\Projects\Git\tm32\tm32.c(315) : warning C4761: integral size mismatch in argument; conversion supplied
+C:\Projects\SW\tm32\Work\tm32.c(315) : warning C4761: integral size mismatch in argument; conversion supplied
 Linking...
 
 
