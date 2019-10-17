@@ -16,6 +16,7 @@
     1.1.1		7/2/2004			Fixed failed to open Com10, Com11.. etc bug
 	1.1.2		7/4/2005			Fixed missing 38400 baudrate
 	1.1.3		26-MAY-2005			Added color support
+	1.1.4		14/01/2010          For OMNIBOARD file upload
 
 */
 #include <windows.h>
@@ -53,7 +54,7 @@ int	 Port, BaudRate;		/* Port = 1,2...8  BaudRate = 2400,4800...57600 */
 int  Xcount=0;
 
 /* Version number */
-char* Version = "1.1.3";
+char* Version = "1.1.4";
 
 /* fwd reference */
 void show_setting(void);
@@ -260,12 +261,13 @@ char	txt[100], *p;
 					xcnt = 0;			// column counter
 					while ( (re=fgetc( Stream )) != EOF)
 					{
-						Sleep(5);
+						Sleep(2);
 						rs_putc((char)(re & 0xff));
 					
 						ch = rs_getch();	// get char from COM port
 						if (ch> 0) 
 						{
+
 							if (ch==LF)	// LF ?
 							{ 
 								xcnt = 0; con_print_CR();
@@ -280,9 +282,13 @@ char	txt[100], *p;
 								{ 
 									xcnt = 0; con_print_CR(); 
 								}
+								
 								if (ch==TAB) putch(' ');	// replace all TAB with ' '
-								else putch(ch);
+								    else putch(ch);
+								
 							}
+
+
 						}
 						if (kbhit()) { if (getch()==ESC) break; }		// user abort
 					}
