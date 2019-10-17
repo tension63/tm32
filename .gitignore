@@ -1,0 +1,6 @@
+*.exe
+Release/console.obj
+Release/rs232.obj
+Release/tm32.obj
+Release/tm32.pch
+Release/vc60.idb
